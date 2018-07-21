@@ -1,0 +1,64 @@
+<form action="" class="popup horse-res">
+    <div class="horse-res__heading">
+        <div class="horse-res__heading__header" data-test-selector="Overlay Header">Results of Horse search</div>
+        <div class="horse-res__heading__info">(Click on a horse to select)</div>
+        <div class="horse-res__heading__buttons">
+            <button class="button button-light-grey button-cancel tinyboxHide" data-test-selector="Button Close">Close</button>
+        </div>
+    </div>
+    <div class="horse-res__fields">
+        <table class="data-table horse-res__table">
+            <thead>
+            <tr class="data-table__row data-table__row_header data-table__row_header-black">
+                <th class="data-table__cell data-table__cell_header horse-res_st-name">
+                    <span>stylename</span>
+                </th>
+                <th class="data-table__cell data-table__cell_header horse-res_bred">
+                    <span>bred</span>
+                </th>
+                <th class="data-table__cell data-table__cell_header horse-res_yob">
+                    <span>yob</span>
+                </th>
+                <th class="data-table__cell data-table__cell_header horse-res_sex">
+                    <span>sex</span>
+                </th>
+                <th class="data-table__cell data-table__cell_header horse-res_uid">
+                    <span>uid</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(count($this->records)) { ?>
+                <?php foreach ($this->records as $data) { ?>
+                    <tr class="js-horse-search-record data-table__row data-table__row-player-select"
+                        data-horse-name="<?=$data['horse_stylename']?>"
+                        data-horse-uid="<?=$data['horse_uid']?>"
+                    >
+                        <td class="data-table__cell horse-res__value_st-name">
+                            <?=$data['horse_stylename']?>
+                        </td>
+                        <td class="data-table__cell horse-res__value_bred">
+                            <?=$data['bred']?>
+                        </td>
+                        <td class="data-table__cell horse-res__value_yob">
+                            <?=$data['yob']?>
+                        </td>
+                        <td class="data-table__cell horse-res__value_sex">
+                            <?=$data['sex']?>
+                        </td>
+                        <td class="data-table__cell horse-res__value_uid">
+                            <?=$data['horse_uid']?>
+                        </td>
+                    </tr>
+                <?php } ?>
+            <?php } else { ?>
+            <tr class="data-table__row data-table__row-player-select">
+                <td class="data-table__cell no-results" colspan="5">
+                    No records
+                </td>
+            </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</form>

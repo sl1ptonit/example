@@ -1,0 +1,414 @@
+<?php
+$dataHeader  = $this->dataHeader;
+$dataRunners = $this->dataRunners;
+?>
+<section class="content edit-res">
+    <header class="content__header">
+        <h3>Edit Result</h3>
+        <div class="time-nav clearfix">
+            <?php if ($dataHeader['prev_result_uid']) { ?>
+                <span class="prev-arrow">
+                    <a href="<?=$this->url(
+                        array(
+                            'module'     => 'hrm',
+                            'controller' => 'edit-result',
+                            'action'     => 'index',
+                            'raceUid'    => $dataHeader['prev_result_uid']
+                        ),
+                        'edit_result', true
+                    );?>">«</a>
+                </span>
+            <?php } ?>
+            <span class="name">
+                <?=$dataHeader['course_name']?>
+            </span>
+            <strong><?=date("H.i", strtotime($dataHeader['race_datetime']))?></strong>
+            <span class="date"><?=date("M d Y", strtotime($dataHeader['race_datetime']))?></span>
+            <?php if ($dataHeader['next_result_uid']) { ?>
+                <span class="next-arrow">
+                    <a href="<?=$this->url(
+                        array(
+                            'module'     => 'hrm',
+                            'controller' => 'edit-result',
+                            'action'     => 'index',
+                            'raceUid'    => $dataHeader['next_result_uid']
+                        ),
+                        'edit_result', true
+                    );?>">»</a>
+                </span>
+            <?php } ?>
+        </div>
+    </header>
+    <main class="content__body">
+        <div class="options">
+                <div class="title">
+                    <span class="namings">title: </span>
+                    <?=$this->formText('', $dataHeader['title'], [
+                        'readonly' => 'readonly'
+                    ]);?>
+                </div>
+                <div class="st-field">
+                    <div class="stat">
+                        <span class="namings">status: </span>
+                        <?=$this->formText('', $dataHeader['status'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="off-time">
+                        <span class="namings">off time: </span>
+                        <?=$this->formText('', Core_Helper_Formatter::getDateFormat(
+                            $dataHeader['off_time'], "M d Y H:i:s"),
+                            [
+                                'readonly' => 'readonly'
+                            ]
+                        );?>
+                    </div>
+                    <div class="win-time">
+                        <span class="namings">win time: </span>
+                        <?php
+                        if(!empty($dataHeader['win_time']) ) {
+                           list($min, $sec) = explode('.', $dataHeader['win_time']);
+                        }
+                        ?>
+                        <?=$this->formText('', sprintf("%dm %ds", $min, $sec), [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="std-dif">
+                        <span class="namings">std-dif: </span>
+                        <?=$this->formText('', $dataHeader['dif_std'], ['readonly' => 'readonly']);?>
+                        <?=$this->formButton('', 'Standards >>', [
+                            'class' => 'js-standard-button button button-light-grey'
+                        ])?>
+                    </div>
+                </div>
+                <div class="going-field">
+                    <div class="going">
+                        <span class="namings">going: </span>
+                        <?=$this->formText('', $dataHeader['going'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="dist">
+                        <span class="namings">dist: </span>
+                        <?=$this->formText('', Core_Helper_Formatter::yardsToMFY($dataHeader['distance_yard']), [
+                            'readonly' => 'readonly'
+                        ]);?>
+                        <span>or</span>
+                        <?=$this->formText('', $dataHeader['distance_yard'].'y', [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="srj">
+                        <span class="namings">srj: </span>
+                        <?=$this->formText('', $dataHeader['srj'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="track-id">
+                        <span class="namings">track id: </span>
+                        <?=$this->formText('', $dataHeader['track_id'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                </div>
+                <div class="type-field">
+                    <div class="type">
+                        <span class="namings">type: </span>
+                        <?=$this->formText('', $dataHeader['type'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="ages">
+                        <span class="namings">ages: </span>
+                        <?=$this->formText('', $dataHeader['ages'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="ratings">
+                        <span class="namings">ratings: </span>
+                        <?=$this->formText('', $dataHeader['ratings'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="group">
+                        <span class="namings">group: </span>
+                        <?=$this->formText('', $dataHeader['race_group'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                </div>
+                <div class="runners-field">
+                    <div class="runners">
+                        <span class="namings">runners: </span>
+                        <?=$this->formText('', $dataHeader['runners'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="h-f">
+                        <span class="namings">omitted hurdles / fences: </span>
+                        <?=$this->formText('', $dataHeader['omitted'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="stalls">
+                        <span class="namings">stalls: </span>
+                        <?=$this->formText('', $dataHeader['stalls'], [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                    <div class="pool-prize">
+                        <span class="namings">pool prize (&pound;): </span>
+                        <?=$this->formText('', number_format($dataHeader['pool_prize_sterling1'], 2), [
+                            'readonly' => 'readonly'
+                        ]);?>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <?=$this->formButton('', 'Prizes', [
+                        'class' => 'js-button-prizemoney button button-light-grey prz'
+                    ]);?>
+                    <?=$this->formButton('js-button-betting', 'SPs / Totes', [
+                        'class' => 'button button-light-grey sp-tot'
+                    ]);?>
+                    <?=$this->formButton('race_attributes', 'Race Attributes', [
+                        'class' => 'js-race-attributes button button-light-grey race-att'
+                    ]);?>
+                    <?=$this->formButton('', 'CIR >>', [
+                        'class' => 'js-cir-button button button-light-grey cir'
+                    ]);?>
+                    <?=$this->formButton('', 'Analysis >>', [
+                        'class' => 'js-analysis-button button button-light-grey cir'
+                    ]);?>
+                    <?=$this->formButton('', 'More Race Data / Edit >>', [
+                        'class' => 'js-in-development button button_black data-edit'
+                    ]);?>
+                </div>
+                <div class="comment">
+                    <span class="namings">comment: </span>
+                    <?=$this->formTextarea('', $dataHeader['race_comments'], [
+                        'rows'     => 2,
+                        'readonly' => 'readonly'
+                    ])?>
+                </div>
+        </div>
+        <div class="edit-res__container">
+            <table class="data-table">
+                <thead>
+                <tr class="data-table__row data-table__row_header data-table__row_header-black">
+                    <th class="data-table__cell data-table__cell_header edit-res_fp">
+                        <span>fp</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_d">
+                        <span>d</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_pos">
+                        <span>pos</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_dist">
+                        <span>dist</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_horse">
+                        <span>horse</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_no">
+                        <span>no(a)</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_dr">
+                        <span>dr</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_age">
+                        <span>age</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_wgt">
+                        <span>wgt</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_b-v">
+                        <span>b/v</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_ew">
+                        <span>ew</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_ow">
+                        <span>ow</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_oh">
+                        <span>oh</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_jck">
+                        <span>jockey</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_alw">
+                        <span>alw</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_sp">
+                        <span>sp</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_or">
+                        <span>or</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_ws">
+                        <span>ws</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_trainer">
+                        <span>trainer</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header edit-res_silk-own">
+                        <span>silk / owner</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(count($dataRunners)) { ?>
+                    <?php foreach ($dataRunners as $data) { ?>
+                    <tr id="horse_data_container_<?=$data['horse_uid']?>" class="data-table__row">
+                        <td class="edit-res_fp__cell"><?=trim($data['FP'])?></td>
+                        <td class="edit-res_d__cell"><?=$data['DISQ']?></td>
+                        <td class="edit-res_pos__cell"><?=$data['POS']?></td>
+                        <td class="edit-res_dist__cell"><?=$data['DIST']?></td>
+                        <td class="edit-res_horse__cell">
+                            <a class="js-in-development" href="#"><?=$data['HORSE']?></a>
+                        </td>
+                        <td class="edit-res_no__cell"><?=$data['NO']?></td>
+                        <td class="edit-res_dr__cell dr"><?=$data['DR']?></td>
+                        <td class="edit-res_age__cell"><?=$data['AGE']?></td>
+                        <td class="edit-res_wgt__cell"><?=Core_Helper_Formatter::lbsToStones($data['WGT'])?></td>
+                        <td class="edit-res_b-v__cell"><?=$data['BV']?></td>
+                        <td class="edit-res_ew__cell"><?=$data['EW']?></td>
+                        <td class="edit-res_ow__cell"><?=$data['OW']?></td>
+                        <td class="edit-res_oh__cell"><?=$data['OH']?></td>
+                        <td class="edit-res_jck__cell"><?=$data['JOCKEY']?></td>
+                        <td class="edit-res_alw__cell"><?=$data['ALW']?></td>
+                        <td class="edit-res_sp__cell"><?=$data['SP']?></td>
+                        <td class="edit-res_or__cell"><?=$data['ORating']?></td>
+                        <td class="edit-res_ws__cell"><?=$data['WS']?></td>
+                        <td class="edit-res_trainer__cell"><?=$data['TRAINER']?></td>
+                        <td class="edit-res_silk-own__cell">
+                            <span><?=$data['SILK']?></span>
+                            <span><?=$data['OWNER']?></span>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                <?php } else { ?>
+                    <tr class="data-table__row">
+                        <td class="no-records" colspan="20">No records found</td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</section>
+<?=$this->partial('_partials/alert-message.phtml', 'default'); ?>
+<?=$this->partial('_partials/confirm-multi-message.phtml', 'default', [
+    'section'           => 'unsaved',
+    'yesButtonTitle'    => 'Continue',
+    'cancelButtonTitle' => 'Cancel&Review'
+]); ?>
+<?=$this->partial('_partials/confirm-message.phtml', 'default', [
+    'multiple'           => 'delete-prizemoney-container',
+    'section'            => 'delete-prizemoney',
+    'overrideCancel'     => true,
+    'cancelButtonTitle'  => 'Cancel&Review',
+    'deleteButtonTitle'  => 'Continue',
+    'warningTitle'       => 'Warning',
+    'deleteTitleWarning' => "Are you sure you want to delete this record ?"
+]);
+?>
+<script>
+    $(document).ready(function () {
+        $.fn.tinybox();
+        /**
+         * init result rating
+         */
+        hrm.resultEdit.init({
+            raceId: '<?=$dataHeader['race_instance_uid']; ?>',
+            courseUid: '<?=$dataHeader['course_uid']; ?>',
+            pageUrl: "<?=$this->url([], 'result_maintenance_monitor_index', true); ?>",
+            cirScreenUrl: "<?=$this->url([
+                'module'     => 'cr',
+                'controller' => 'race-comment',
+                'action'     => 'index',
+                'race_id'    => $dataHeader['race_instance_uid'],
+                'race_date'  => date('Y-m-d', strtotime($dataHeader['race_datetime']))
+            ], 'cr_comment_index', true)?>",
+            analysisScreenUrl: "<?=$this->url([
+                'module'     => 'ra',
+                'controller' => 'notebook',
+                'race_date'  => date('Y-m-d', strtotime($dataHeader['race_datetime'])),
+                'race_id'    => $dataHeader['race_instance_uid'],
+            ], 'ra_notebook', true)?>",
+            standardScreenUrl: "<?=$this->url([
+                'module'     => 'hrf',
+                'controller' => 'standard-time',
+            ], 'reference_standard_time', true)?>",
+        });
+
+        rde.raceAttributes.init({
+            raceId: '<?=$dataHeader['race_instance_uid']; ?>',
+            raceAttributesDetailsUrl: "<?=$this->url([
+                'module'     => 'raceDataEntry',
+                'controller' => 'cards',
+                'action'     => 'race-attributes-details',
+            ]); ?>",
+            saveRaceAttributeUrl: "<?=$this->url([
+                'module'     => 'raceDataEntry',
+                'controller' => 'cards',
+                'action'     => 'save-race-attribute',
+            ]); ?>",
+            deleteRaceAttributeUrl: "<?=$this->url([
+                'module'     => 'raceDataEntry',
+                'controller' => 'cards',
+                'action'     => 'delete-race-attribute',
+            ]); ?>",
+        });
+
+        /**
+         * Init prizes object
+         */
+        ra.prizeMoney.init({
+            raceUid: "<?=$dataHeader['race_instance_uid']; ?>",
+            isAllowed: "<?=$this->isAllowedBetting?>",
+            showPrizePopupUrl: "<?=$this->url([
+                'module'     => 'cr',
+                'controller' => 'prize-money',
+                'action'     => 'show-popup',
+            ]); ?>",
+            savePrizeDataUrl: "<?=$this->url([
+                'module'     => 'cr',
+                'controller' => 'prize-money',
+                'action'     => 'save',
+            ]); ?>",
+            deletePrizeDataUrl: "<?=$this->url([
+                'module'     => 'cr',
+                'controller' => 'prize-money',
+                'action'     => 'delete',
+            ]); ?>",
+        });
+
+        ra.bettingDataMain.init({
+            raceId: "<?=$dataHeader['race_instance_uid']; ?>",
+            isAllowedBetting: "<?=$this->isAllowedBetting?>",
+            showBettingPopupUrl: "<?=$this->url([
+                'module'     => 'cr',
+                'controller' => 'betting-data',
+                'action'     => 'show-betting-popup',
+            ]); ?>"
+        });
+
+        ra.bettingDataEdit.init({
+            raceId: "<?=$dataHeader['race_instance_uid']; ?>",
+            showBettingPopupUrl: "<?=$this->url([
+                'module'     => 'cr',
+                'controller' => 'betting-data',
+                'action'     => 'show-betting-popup',
+            ]); ?>",
+            saveBettingDataUrl: "<?=$this->url([
+                'module'     => 'cr',
+                'controller' => 'betting-data',
+                'action'     => 'save-betting',
+            ]); ?>",
+            permissionErrorMessage: "Sorry, You don't have permission"
+        });
+    })
+</script>

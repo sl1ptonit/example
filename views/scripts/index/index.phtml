@@ -1,0 +1,135 @@
+<section class="content res-maint">
+    <header class="content__header">
+        <h2 class="content__title">Result Maintenance</h2>
+    </header>
+
+    <main class="content__body">
+        <div class="options">
+            <div class="res-maint__val">
+                <input data-default="<?=$this->date;?>"
+                       class="js-search-date ui-datepicker-trigger" type="text" value="<?=$this->date;?>">
+
+                <?=$this->partial('_partials/two-column-dropdown.phtml', 'default', [
+                    'attrs'      => [
+                        'name'          => 'country_list',
+                        'value'         => '',
+                        'class'         => 'js-country-list-dropdown',
+                        'data-ul-class' => 'combo-double-list',
+                    ],
+                    'collection' => $this->countryFilter
+                ]);?>
+
+                <span class="js-search-course-wrapper">
+                    <?=$this->partial('_partials/two-column-dropdown.phtml', 'default', [
+                        'attrs'      => [
+                            'name'          => 'course_list',
+                            'value'         => '',
+                            'class'         => 'js-course-list-dropdown',
+                            'data-ul-class' => 'combo-double-list',
+                        ],
+                        'collection' => $this->courseFilter
+                    ]);?>
+                </span>
+
+                <?=$this->formSelect('race_type_list', '', [], $this->raceTypeFilter)?>
+                <button class="js-day-search-action button-red search-box_button first-search" type="button" id="search-button">
+                    <img src="/img/search.png">
+                </button>
+                <span class="namings">Horse: </span>
+                <input class="js-horse-search-name" type="text" maxlength="50">
+                <button class="js-button-search-horse button button-light-grey" disabled>Find</button>
+                <span class="namings">Id: </span>
+                <input class="js-horse-search-id hrs-search" type="text" maxlength="9">
+                <button type="button"
+                        class="js-horse-search-action button-red search-box_button second-search"
+                        id="search-button" disabled>
+                    <img src="/img/search.png">
+                </button>
+                <button class="js-add-horse-result button-black hrs-add-res" disabled>+Horse Result</button>
+                <span class="js-search-error err"></span>
+            </div>
+        </div>
+
+        <div class="js-search-wrapper res-maint__container">
+            <table class="data-table">
+                <thead>
+                <tr class="data-table__row data-table__row_header data-table__row_header-black">
+                    <th class="data-table__cell data-table__cell_header res-maint__crs">
+                        <span>course</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__date">
+                        <span>date</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__time">
+                        <span>time</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__dist">
+                        <span>distance</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__type">
+                        <span>type</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__going">
+                        <span>going</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__hrs-win">
+                        <span>horse/winner</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__pos">
+                        <span>pos</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__prize">
+                        <span>prize (&pound;)</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__edit"></th>
+                    <th class="data-table__cell data-table__cell_header res-maint__jck">
+                        <span>jockey</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__trn">
+                        <span>trainer</span>
+                    </th>
+                    <th class="data-table__cell data-table__cell_header res-maint__own">
+                        <span>owner</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr class="data-table__row">
+                        <td class="no-records" colspan="13">Define inputs then click search icon</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+</section>
+<script>
+    $(document).ready(function () {
+        $.fn.tinybox();
+        /**
+         * init result rating
+         */
+        hrm.resultHrmMaintenance.init({
+            searchUrl: "<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'search',
+            ]); ?>",
+            getCoursesByDateUrl: "<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'get-course-filter',
+            ]); ?>",
+            findHorseUrl: "<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'find-horse-url',
+            ]); ?>",
+            addHorseResultFormUrl: "<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'add-horse-result-form',
+            ]); ?>",
+        });
+    })
+</script>

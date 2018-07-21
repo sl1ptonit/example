@@ -1,0 +1,14 @@
+<div class="ex-run">
+    existing runners
+</div>
+<div class="click">Click race to see existing runners</div>
+<div class="run-list">
+    <?php if (!empty($this->runnerList)) { ?>
+        <?php foreach ($this->runnerList as $data) { ?>
+            <div>
+                <span><?=$data['FP']?></span>
+                <span><?=$data['HORSE']?></span>
+            </div>
+        <?php } ?>
+    <?php } ?>
+</div>

@@ -1,0 +1,171 @@
+<form action="" class="popup add-edit-hrs js-add-result-form">
+    <div class="hrs-race_wrapper">
+        <div class="hrs-controls">
+            <div class="hrs-controls__header">
+                <div class="heading">
+                    <h3>Add / Edit Horse Race</h3>
+                </div>
+                <div class="error js-error-container"></div>
+                <hr/>
+            </div>
+            <div class="hrs-controls__top">
+                <div class="val">
+                    Set date; select existing race or add new
+                </div>
+                <div class="date clearfix">
+                    <?=$this->formText('', '', [
+                        'class' => 'js-add-result-date',
+                    ])?>
+                    <?=$this->formButton('', '+New Race', [
+                        'class'          => 'btn button-red button_crimson js-add-result-button-new-race',
+                        'data-horse-uid' => $this->horseDetails['horse_uid'],
+                        'disabled'       => 'disabled',
+                    ])?>
+                </div>
+                <div class="crs-sel">
+                    <?=$this->partial('_partials/two-column-dropdown.phtml', 'default', [
+                        'attrs'      => [
+                            'data-ul-class' => 'combo-double-list',
+                            'value'         => '',
+                            'class'         => 'js-add-result-course-select js-add-result-race-data',
+                            'disabled'      => 'disabled',
+                        ],
+                        'collection' => $this->courses,
+                    ]);?>
+                </div>
+                <div class="r-type">
+                    <span class="namings">time</span>
+                    <?=$this->formText('', '', [
+                        'class'    => 'time js-add-result-time js-add-result-race-data',
+                        'disabled' => 'disabled',
+                    ])?>
+                    <span class="namings">type</span>
+                    <?=$this->formSelect('', '', [
+                        'class'    => 'js-add-result-type-select js-add-result-race-data',
+                        'disabled' => 'disabled',
+                    ], $this->raceTypes)?>
+                </div>
+                <div class="dist">
+                    <span class="namings">dist: </span>
+                    <?=$this->formText('', '', [
+                        'class'    => 'js-add-result-m js-add-result-race-data',
+                        'disabled' => 'disabled',
+                    ])?>
+                    <span class="val">m</span>
+                    <?=$this->formText('', '', [
+                        'class'    => 'js-add-result-f js-add-result-race-data',
+                        'disabled' => 'disabled',
+                    ])?>
+                    <span class="val">f</span>
+                    <?=$this->formText('', '', [
+                        'class'    => 'js-add-result-y js-add-result-race-data',
+                        'disabled' => 'disabled',
+                    ])?>
+                    <span class="val">y</span>
+                </div>
+                <div class="g-uid">
+                    <div class="going">
+                        <span class="namings">going: </span>
+                        <?=$this->partial('_partials/two-column-dropdown.phtml', 'default', [
+                            'attrs'      => [
+                                'data-ul-class' => 'combo-double-list going-list',
+                                'value'         => '',
+                                'class'         => 'js-add-result-going-select js-add-result-race-data',
+                                'disabled'      => 'disabled',
+                            ],
+                            'collection' => $this->goingTypes,
+                        ]);?>
+                    </div>
+                    <div class="uid">
+                        <span class="namings">uid: </span>
+                        <?=$this->formText('', '', [
+                            'class'    => 'js-add-result-race-uid',
+                            'disabled' => 'disabled',
+                        ])?>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+            <div class="hrs-controls__bottom">
+                <div class="heading">
+                    <span class="namings">horse: </span>
+                    <span class="value"><?=$this->horseDetails['horse_stylename']?></span>
+                </div>
+                <div class="pos">
+                    <span class="namings">position: </span>
+                    <?=$this->formSelect('', '', [
+                        'class'    => 'js-add-result-position-select js-add-result-runner-data',
+                        'disabled' => 'disabled',
+                    ], $this->positions)?>
+                </div>
+                <div class="prize clearfix">
+                    <span class="namings">Prize (&pound;): </span>
+                    <?=$this->formText('', '', [
+                        'class'    => 'js-add-result-prize js-add-result-runner-data',
+                        'disabled' => 'disabled',
+                    ])?>
+                    <?=$this->formButton('', 'Convert', [
+                        'class'    => 'btn button-light-grey js-add-result-button-convert',
+                        'disabled' => 'disabled',
+                    ])?>
+                </div>
+            </div>
+            <div class="hrs-controls__buttons">
+                <?=$this->formButton('', 'Cancel', [
+                    'class' => 'btn button-light-grey tinyboxHide',
+                ])?>
+                <?=$this->formButton('', 'Save & Close', [
+                    'class'          => 'btn button-red button_crimson js-add-result-button-save-close',
+                    'data-horse-uid' => $this->horseDetails['horse_uid'],
+                    'disabled'       => 'disabled',
+                ])?>
+            </div>
+        </div>
+        <div class="hrs-table__left js-add-result-race-list">
+            <?=$this->partial('_partials/add-horse-result-races-list.phtml', 'hrm', [])?>
+        </div>
+        <div class="hrs-table__right">
+            <div class="js-add-result-runners-list runner-wrap">
+                <?=$this->partial('_partials/add-horse-result-runners-list.phtml', 'hrm', [
+                    'runnerList' => [],
+                ])?>
+            </div>
+            <?=$this->formButton('', 'Select Race', [
+                'class'    => 'btn button-light-grey js-add-result-button-select-race',
+                'disabled' => 'disabled',
+            ])?>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(function () {
+        hrm.resultEditHorseRace.init({
+            raceListUrl: '<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'get-race-list',
+            ])?>',
+            runnerListUrl: '<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'get-race-runners',
+            ])?>',
+            saveRaceRunnerUrl: '<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'save-race-runner',
+            ])?>',
+            currencyConvertToolUrl: '<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'currency-convert-tool',
+            ])?>',
+            currencyConvertUrl: '<?=$this->url([
+                'module'     => 'hrm',
+                'controller' => 'index',
+                'action'     => 'currency-convert',
+            ])?>',
+        });
+    });
+</script>

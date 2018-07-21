@@ -1,0 +1,9 @@
+<?=$this->partial('_partials/two-column-dropdown.phtml', 'default', [
+    'attrs'      => [
+        'name'  => 'course_list',
+        'value' => '',
+        'class' => 'js-course-list-dropdown',
+        'data-ul-class' => 'combo-double-list',
+    ],
+    'collection' => $this->courseFilter
+]);?>

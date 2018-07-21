@@ -1,0 +1,105 @@
+<table class="js-search-table data-table">
+    <thead>
+    <tr class="data-table__row data-table__row_header data-table__row_header-black">
+        <th class="data-table__cell data-table__cell_header res-maint__crs">
+            <span>course</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__date">
+            <span>date</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__time">
+            <span>time</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__dist">
+            <span>distance</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__type">
+            <span>type</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__going">
+            <span>going</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__hrs-win">
+            <span>horse/winner</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__pos">
+            <span>pos</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__prize">
+            <span>prize (&pound;)</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__edit"></th>
+        <th class="data-table__cell data-table__cell_header res-maint__jck">
+            <span>jockey</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__trn">
+            <span>trainer</span>
+        </th>
+        <th class="data-table__cell data-table__cell_header res-maint__own">
+            <span>owner</span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if(count($this->records) && isset($this->records['0']['course_name'])) { ?>
+        <?php foreach ($this->records as $data) { ?>
+            <tr class="data-table__row">
+                <td class="data-table__cell res-maint__crs">
+                    <?=$data['course_name']?>
+                </td>
+                <td class="data-table__cell res-maint__date">
+                    <?=date("d M Y", strtotime($data['race_datetime']))?>
+                </td>
+                <td class="data-table__cell res-maint__time">
+                    <?=date("H:i", strtotime($data['race_datetime']))?>
+                </td>
+                <td class="data-table__cell res-maint__dist">
+                    <?=Core_Helper_Formatter::yardsToMFY($data['distance_yard'])?>
+                </td>
+                <td class="data-table__cell res-maint__type">
+                    <?=$data['race_type_code']?>
+                </td>
+                <td class="data-table__cell res-maint__going">
+                    <?=$data['going_code']?>
+                </td>
+                <td class="data-table__cell res-maint__hrs-win">
+                    <?=$data['horse_winner_name']?>
+                </td>
+                <td class="data-table__cell res-maint__pos">
+                    <?=$data['pos']?>
+                </td>
+                <td class="data-table__cell res-maint__prize">
+                    <?=$data['prize_sterling']?>
+                </td>
+                <td class="data-table__cell res-maint__edit">
+                    <button type="button"
+                            class="button button-light-grey js-edit-result-button"
+                            data-url="<?=$this->url(
+                                array(
+                                    'module'     => 'hrm',
+                                    'controller' => 'edit-result',
+                                    'action'     => 'index',
+                                    'raceUid'    => $data['race_instance_uid']
+                                ),
+                                'edit_result', true
+                            ); ?>"
+                    >Edit</button>
+                </td>
+                <td class="data-table__cell res-maint__jck">
+                    <?=$data['jockey_name']?>
+                </td>
+                <td class="data-table__cell res-maint__trn">
+                    <?=$data['trainer_name']?>
+                </td>
+                <td class="data-table__cell res-maint__own">
+                    <?=$data['owner_name']?>
+                </td>
+            </tr>
+        <?php } ?>
+    <?php } else { ?>
+        <tr class="data-table__row">
+            <td class="no-records" colspan="13">No records found</td>
+        </tr>
+    <?php }  ?>
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+<form action="" class="popup curr-conv">
+    <div class="curr-conv__header">
+        <h3>Currency Converter</h3>
+    </div>
+    <div class="curr-conv__fields">
+        <div class="amount">
+            <span class="namings">Amount won: </span>
+            <?=$this->formText('', '', [
+                'class' => 'js-currency-convert-amount',
+            ])?>
+        </div>
+        <div class="cur">
+            <span class="namings">Currency: </span>
+            <?=$this->formSelect('', '', [
+                'class' => 'js-currency-convert-currency',
+            ], $this->currencies);?>
+        </div>
+    </div>
+    <div class="curr-conv__error js-error-container"></div>
+    <div class="curr-conv__buttons">
+        <?=$this->formButton('', 'Convert to sterling', [
+            'class'     => 'btn button-light-grey js-currency-convert-button-convert',
+            'data-year' => date('Y', strtotime($this->date)),
+            'disabled'  => 'disabled',
+        ])?>
+        <?=$this->formButton('', 'Cancel', [
+            'class' => 'btn button-light-grey js-currency-convert-button-cancel',
+        ])?>
+    </div>
+</form>

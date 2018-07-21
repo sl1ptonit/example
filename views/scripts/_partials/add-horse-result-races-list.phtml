@@ -1,0 +1,51 @@
+<table class="data-table">
+    <thead>
+        <tr class="data-table__row data-table__row_header data-table__row_header-black">
+            <th class="data-table__cell data-table__cell_header hrs-table_time">
+                <span>time</span>
+            </th>
+            <th class="data-table__cell data-table__cell_header hrs-table_crs">
+                <span>course</span>
+            </th>
+            <th class="data-table__cell data-table__cell_header hrs-table_title">
+                <span>title</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (isset($this->raceList)) { ?>
+            <?php if (!empty($this->raceList)) { ?>
+                <?php foreach ($this->raceList as $data) {
+                    $distance = Core_Helper_Formatter::yardsToMFYArray($data['distance_yard']);
+                    ?>
+                    <tr class="data-table__row js-add-result-race-row"
+                        data-race-uid="<?=$data['race_instance_uid']?>"
+                        data-course-uid="<?=$data['course_uid']?>"
+                        data-time="<?=date('H:i', strtotime($data['race_datetime']))?>"
+                        data-type-code="<?=$data['race_type_code']?>"
+                        data-m="<?=$distance['m']?>"
+                        data-f="<?=$distance['f']?>"
+                        data-y="<?=$distance['y']?>"
+                        data-going-code="<?=$data['going_code']?>"
+                    >
+                        <td class="data-table__cell inner-table_time">
+                            <?=date('H:i', strtotime($data['race_datetime']))?>
+                        </td>
+                        <td class="data-table__cell inner-table_crs">
+                            <?=$data['course_name']?>
+                        </td>
+                        <td class="data-table__cell inner-table_title">
+                            <?=$data['race_instance_title']?>
+                        </td>
+                    </tr>
+                <?php } ?>
+            <?php } else { ?>
+                <tr>
+                    <td class="no-records" colspan="3">
+                        <div>No records found</div>
+                    </td>
+                </tr>
+            <?php } ?>
+        <?php } ?>
+    </tbody>
+</table>
